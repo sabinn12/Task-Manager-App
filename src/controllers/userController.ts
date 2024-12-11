@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
-import { registerUser, loginUserService } from '../services/userService';
+import { registerUser, loginUserService, getAllUsersService } from '../services/userService';
+
 
 // Register user controller
 
@@ -16,7 +17,7 @@ export const registerUserController = async (req: Request, res: Response) => {
     }
   };
 
-// Login user controlle
+// Login user controller
 
 export const loginUser = async (req: Request, res: Response) => {
     try {
@@ -37,3 +38,19 @@ export const loginUser = async (req: Request, res: Response) => {
 };
 
 
+// get all users controller
+
+export const getAllUsers = async (req: Request, res: Response) => {
+    try {
+        const users = await getAllUsersService();
+        res.status(200).json({
+            success: true,
+            data: users,
+        });
+    } catch (error: any) {
+        res.status(500).json({
+            success: false,
+            message: error.message || 'An error occurred while fetching users',
+        });
+    }
+};

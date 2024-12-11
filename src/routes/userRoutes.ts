@@ -1,5 +1,5 @@
 import express from 'express';
-import { registerUserController, loginUser } from '../controllers/userController';
+import { registerUserController, loginUser, getAllUsers } from '../controllers/userController';
 import { validateRequest } from '../middlewares/validateRequest';
 import { registerUserValidation, loginUserValidation } from '../schema/userValidationsSchema';
 
@@ -10,5 +10,8 @@ router.post('/register', validateRequest(registerUserValidation), registerUserCo
 
 // User login
 router.post('/login', validateRequest(loginUserValidation), loginUser);
+
+// get all users
+router.get('/',  getAllUsers);
 
 export default router;

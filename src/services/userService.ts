@@ -48,3 +48,18 @@ export const registerUser = async (name: string, email: string, password: string
 
     return token;
 };
+
+// get all users service
+
+export const getAllUsersService = async () => {
+  const users = await prisma.user.findMany({
+      select: {
+          id: true,
+          name: true,
+          email: true,
+          createdAt: true, // Customize fields based on your user schema
+      },
+  });
+
+  return users;
+};

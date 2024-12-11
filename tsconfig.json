@@ -8,6 +8,8 @@
     "outDir": "./dist",
     "rootDir": "./src"
   },
-  "include": ["src/**/*"],
+ "include": [
+    "src/**/*", "types/**/*"  // Include your custom type definitions
+  ],
   "exclude": ["node_modules"]
 }
