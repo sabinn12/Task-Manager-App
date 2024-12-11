@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { registerUser } from '../services/userService';
+import { registerUser, loginUserService } from '../services/userService';
 
 // Register user controller
 
@@ -15,5 +15,25 @@ export const registerUserController = async (req: Request, res: Response) => {
       res.status(400).json({ success: false, message: error.message });
     }
   };
+
+// Login user controlle
+
+export const loginUser = async (req: Request, res: Response) => {
+    try {
+        const { email, password } = req.body;
+        const token = await loginUserService(email, password);
+
+        res.status(200).json({
+            success: true,
+            message: 'Login successful',
+            token,
+        });
+    } catch (error: any) {
+        res.status(400).json({
+            success: false,
+            message: error.message,
+        });
+    }
+};
 
 
