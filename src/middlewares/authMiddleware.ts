@@ -9,11 +9,11 @@ export const authenticate = (req: Request, res: Response, next: NextFunction) =>
     }
 
     try {
-        const decoded = jwt.verify(token, process.env.JWT_SECRET!) as JwtPayload; // Ensure type is JwtPayload
+        const decoded = jwt.verify(token, process.env.JWT_SECRET!) as JwtPayload; 
 
         // Validate decoded token structure
         if (typeof decoded === 'object' && 'id' in decoded && 'email' in decoded) {
-            req.user = { id: decoded.id as string, email: decoded.email as string }; // Cast properties explicitly
+            req.user = { id: decoded.id as string, email: decoded.email as string }; 
             next();
         } else {
             res.status(403).json({ success: false, message: 'Invalid token structure' });
