@@ -48,3 +48,16 @@ export const updateTaskByIdService = async (id: string, title: string, descripti
 
     return updatedTask;
 };
+
+
+// delete task by id service
+
+export const deleteTaskByIdService = async (id: string) => {
+    const deletedTask = await prisma.task.delete({
+        where: {
+            id: Number(id),
+        },
+    });
+
+    return deletedTask;
+};

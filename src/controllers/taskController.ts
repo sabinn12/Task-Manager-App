@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { createTaskService, getAllTasksForAUserService, updateTaskByIdService } from '../services/taskService';
+import { createTaskService, getAllTasksForAUserService, updateTaskByIdService, deleteTaskByIdService } from '../services/taskService';
 
 //  an interface to extend the Request type
 interface AuthenticatedRequest extends Request {
@@ -70,6 +70,26 @@ export const updateTaskById = async (req: Request, res: Response) => {
         res.status(500).json({
             success: false,
             message: error.message || 'An error occurred while updating task by id',
+        });
+    }
+};
+
+
+// delete task by id controller
+
+export const deleteTaskById = async (req: Request, res: Response) => {  
+    try {
+        const { id } = req.params;
+        const deletedTask = await deleteTaskByIdService(id);
+        res.status(200).json({
+            success: true,
+            message: 'Task deleted successfully',
+            data: deletedTask,
+        });
+    } catch (error: any) {
+        res.status(500).json({
+            success: false,
+            message: error.message || 'An error occurred while deleting task by id',
         });
     }
 };
