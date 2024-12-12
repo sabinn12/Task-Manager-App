@@ -1,3 +1,5 @@
+
+
 {
   "compilerOptions": {
     "target": "ES6",
@@ -6,10 +8,12 @@
     "esModuleInterop": true,
     "skipLibCheck": true,
     "outDir": "./dist",
-    "rootDir": "./src"
+    "rootDir": "./src",
+    "typeRoots": ["./node_modules/@types", "./src/@types"],
+    "types": ["express"]
   },
- "include": [
-    "src/**/*", "types/**/*"  // Include your custom type definitions
+  "include": [
+    "src/**/*"
   ],
   "exclude": ["node_modules"]
 }

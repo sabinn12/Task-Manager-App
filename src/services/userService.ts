@@ -63,3 +63,4 @@ export const getAllUsersService = async () => {
 
   return users;
 };
+
