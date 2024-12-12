@@ -21,11 +21,6 @@ export const createTask = async (req: AuthenticatedRequest, res: Response) => {
 
         const { title, description, deadline, priority } = req.body;
 
-        if (!title || !deadline || !priority) {
-            res.status(400).json({ success: false, message: 'Title, deadline, and priority are required' });
-            return;
-        }
-
         const task = await createTaskService({
             title,
             description,
