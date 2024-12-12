@@ -29,3 +29,22 @@ export const getAllTasksForAUserService = async (userId: string) => {
 
     return tasks;
 };
+
+
+// update task by id service
+
+export const updateTaskByIdService = async (id: string, title: string, description: string, deadline: Date, priority: string) => {
+    const updatedTask = await prisma.task.update({
+        where: {
+            id: Number(id),
+        },
+        data: {
+            title,
+            description,
+            deadline,
+            priority,
+        },
+    });
+
+    return updatedTask;
+};

@@ -2,6 +2,7 @@
 import { Request, Response, NextFunction } from 'express';
 import jwt, { JwtPayload } from 'jsonwebtoken';
 
+
 //  an interface to extend the Request type
 interface AuthenticatedRequest extends Request {
     user?: {
@@ -32,3 +33,6 @@ export const authenticate = (req: AuthenticatedRequest, res: Response, next: Nex
         res.status(403).json({ success: false, message: 'Invalid token' });
     }
 };
+
+
+
