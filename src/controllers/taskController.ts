@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { createTaskService } from '../services/taskService';
+import { createTaskService, getAllTasksForAUserService } from '../services/taskService';
 
 //  an interface to extend the Request type
 interface AuthenticatedRequest extends Request {
@@ -40,3 +40,27 @@ export const createTask = async (req: AuthenticatedRequest, res: Response) => {
         });
     }
 };
+
+// get all tasks for a user controller
+
+export const getAllTasksForAUser = async (req: Request, res: Response) => {
+    try {
+        const tasks = await getAllTasksForAUserService(req.params.id);
+        res.status(200).json({
+            success: true,
+            data: tasks,
+        });
+    } catch (error: any) {
+        res.status(500).json({
+            success: false,
+            message: error.message || 'An error occurred while getting all tasks for a user',
+        });
+    }
+};
+
+
+
+
+
+
+

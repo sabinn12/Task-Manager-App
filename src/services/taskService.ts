@@ -16,3 +16,16 @@ export const createTaskService = async (taskData: CreateTaskInput) => {
 
     return task;
 };
+
+
+// get all tasks for a user service
+
+export const getAllTasksForAUserService = async (userId: string) => {
+    const tasks = await prisma.task.findMany({
+        where: {
+            userId: Number(userId),
+        },
+    });
+
+    return tasks;
+};
