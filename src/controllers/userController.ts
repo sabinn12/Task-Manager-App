@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { registerUser, loginUserService, getAllUsersService } from '../services/userService';
+import { registerUser, loginUserService, getAllUsersService, getUserByIdService } from '../services/userService';
 
 
 // Register user controller
@@ -55,3 +55,18 @@ export const getAllUsers = async (req: Request, res: Response) => {
     }
 };
 
+// get user by id
+export const getUserById = async (req: Request, res: Response) => {
+    try {
+        const user = await getUserByIdService(req.params.id);
+        res.status(200).json({
+            success: true,
+            data: user,
+        });
+    } catch (error: any) {
+        res.status(500).json({
+            success: false,
+            message: error.message || 'An error occurred while fetching user by id',
+        });
+    }
+};
