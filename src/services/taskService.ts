@@ -1,5 +1,6 @@
 import prisma from "../config/db";
 import { CreateTaskInput } from "../@types/task";
+import e from "express";
 
 // Create task service
 
@@ -76,4 +77,32 @@ export const deleteTaskByIdService = async (id: string) => {
     });
 
     return deletedTask;
+};
+
+
+// Update task status service
+
+export const updateTaskStatusService = async (data: { taskId: number; status: string; userId: number }) => {
+    const { taskId, status, userId } = data;
+
+    // Ensure the task belongs to the user
+    const task = await prisma.task.findUnique({
+        where: { id: taskId },
+    });
+
+    if (!task) {
+        throw new Error('Task not found');
+    }
+
+    if (task.userId !== userId) {
+        throw new Error('Unauthorized to update this task');
+    }
+
+    // Update the task status
+    const updatedTask = await prisma.task.update({
+        where: { id: taskId },
+        data: { status },
+    });
+
+    return updatedTask;
 };

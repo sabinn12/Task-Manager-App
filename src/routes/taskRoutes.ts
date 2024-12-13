@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { createTask, getAllTasksForAUser, updateTaskById, deleteTaskById } from '../controllers/taskController';
+import { createTask, getAllTasksForAUser, updateTaskById, deleteTaskById, updateTaskStatus } from '../controllers/taskController';
 import { validateRequest} from '../middlewares/validateRequest';
 import { authenticate } from '../middlewares/authMiddleware';
 import { authorizeTaskAccess } from '../middlewares/taskMiddleware';
@@ -15,6 +15,11 @@ router.get('/:id', getAllTasksForAUser);
 
 // update task by id route  
 router.put('/update/:id', authenticate, authorizeTaskAccess, validateRequest(updateTaskValidationSchema),  updateTaskById);
+
+// update task status route  
+
+router.put('/update-status', authenticate, updateTaskStatus);
+
 
 // delete task by id route  
 router.delete('/:id', authenticate, authorizeTaskAccess, deleteTaskById);
