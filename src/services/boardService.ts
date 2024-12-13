@@ -22,3 +22,13 @@ export const createBoard = async (data: { name: string; userId: number }) => {
 
   return board;
 };
+
+
+// Get boards with tasks service
+export const getBoardsWithTasksForUser = async (userId: number) => {
+  const boards = await prisma.board.findMany({
+      where: { tasks: { some: { userId } } },
+      include: { tasks: true }, 
+  });
+  return boards;
+};

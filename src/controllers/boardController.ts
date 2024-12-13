@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { createBoard } from '../services/boardService';
+import { createBoard, getBoardsWithTasksForUser } from '../services/boardService';
 
 interface AuthenticatedRequest extends Request {
     user?: {
@@ -28,3 +28,28 @@ export const createBoardController = async (req: AuthenticatedRequest, res: Resp
 };
 
 
+
+// Get boards with tasks controller
+export const getBoardsWithTasksController = async (req: AuthenticatedRequest, res: Response) => {
+  try {
+      const userId = Number(req.user?.id);
+
+      if (!userId) {
+       res.status(400).json({ message: "User ID is required" });
+       return;
+      }
+
+      const boards = await getBoardsWithTasksForUser(userId);
+
+      res.status(200).json({
+          success: true,
+          data: boards,
+      });
+  } catch (error: any) {
+      res.status(500).json({
+          success: false,
+          message: error.message || "An error occurred while fetching boards and tasks",
+      });
+ 
+    }
+  };
