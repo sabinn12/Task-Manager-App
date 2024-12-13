@@ -15,7 +15,7 @@ interface AuthenticatedRequest extends Request {
 
 export const createTask = async (req: AuthenticatedRequest, res: Response) => {
     try {
-        const { title, description, deadline, priority } = req.body;
+        const { title, description, deadline, priority, boardId } = req.body;
 
         const task = await createTaskService({
             title,
@@ -23,6 +23,7 @@ export const createTask = async (req: AuthenticatedRequest, res: Response) => {
             deadline: new Date(deadline),
             priority,
             userId: Number(req.user?.id),
+            boardId: Number(boardId),
         });
 
         res.status(201).json({

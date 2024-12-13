@@ -4,6 +4,7 @@ import cors from 'cors';
 import prisma from './config/db';
 import userRoutes from './routes/userRoutes';
 import taskRoutes from './routes/taskRoutes';
+import boardRoutes from './routes/boardRoutes';
 
 dotenv.config();
 
@@ -18,6 +19,9 @@ app.use('/api/users', userRoutes);
 
 // task routes
 app.use('/api/tasks',  taskRoutes);
+
+// board routes
+app.use('/api/boards', boardRoutes);
 
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);

@@ -5,4 +5,5 @@ export interface CreateTaskInput {
     deadline: Date;
     priority: 'Low' | 'Medium' | 'High';
     userId: number; 
+    boardId: number;
 }

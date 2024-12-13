@@ -4,6 +4,21 @@ import { CreateTaskInput } from "../@types/task";
 // Create task service
 
 export const createTaskService = async (taskData: CreateTaskInput) => {
+     // Check if the board exists
+     if (taskData.boardId) {
+        const board = await prisma.board.findUnique({
+            where: { id: taskData.boardId },
+        });
+
+        if (!board) {
+            throw new Error("Board with the specified ID does not exist.");
+        }
+    }
+    // default board
+    const defaultBoard = await prisma.board.findFirst({
+        where: { name: "General" },
+    });
+    
     const task = await prisma.task.create({
         data: {
             title: taskData.title,
@@ -11,6 +26,7 @@ export const createTaskService = async (taskData: CreateTaskInput) => {
             deadline: taskData.deadline,
             priority: taskData.priority,
             userId: taskData.userId,
+            boardId: taskData.boardId || defaultBoard?.id,//This approach ensures all tasks are linked to a board, even if none is provided.
         },
     });
 

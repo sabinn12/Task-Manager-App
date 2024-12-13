@@ -21,6 +21,11 @@ export const createTaskValidationSchema = Joi.object({
         'string.empty': 'Priority is required',
         'string.valid': 'Priority must be one of the following: Low, Medium, High',
     }),
+    boardId: Joi.number().required().messages({
+        'number.base': 'Board ID should be a type of number',
+        'number.empty': 'Board ID is required',
+    }),
+    
     
 });
 
@@ -42,7 +47,7 @@ export const updateTaskValidationSchema = Joi.object({
         'string.base': 'Priority should be a type of text',
         'string.valid': 'Priority must be one of the following: Low, Medium, High',
     }),
-    
+  
 });
 
 
