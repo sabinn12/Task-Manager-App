@@ -3,7 +3,7 @@ import { createBoardController, getBoardsWithTasksController, getBoardsControlle
 import { authenticate } from '../middlewares/authMiddleware';
 import { validateRequest } from '../middlewares/validateRequest';
 import { createBoardValidationSchema } from '../schema/boardValidationSchema';
-import { authorizeTaskAccess } from '../middlewares/taskMiddleware';
+
 
 
 const router = Router();
@@ -18,7 +18,7 @@ router.get("/withTasks", authenticate, getBoardsWithTasksController);
 router.get("/all", getBoardsController);
 
 // Delete board route
-router.delete('/:boardId', authenticate, deleteBoardById);
+router.delete('/:boardId', authenticate,  deleteBoardById);
 
 
 
