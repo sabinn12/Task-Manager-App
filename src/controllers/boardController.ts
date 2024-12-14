@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { createBoard, getBoardsWithTasksForUser, getBoards } from '../services/boardService';
+import { createBoard, getBoardsWithTasksForUser, getBoards, deleteBoardByIdService } from '../services/boardService';
 
 interface AuthenticatedRequest extends Request {
     user?: {
@@ -70,3 +70,25 @@ export const getBoardsWithTasksController = async (req: AuthenticatedRequest, re
  
       }
     };
+
+
+
+// Delete board controller
+export const deleteBoardById = async (req: Request, res: Response) => {
+  try {
+      const { boardId } = req.params;
+
+      await deleteBoardByIdService(Number(boardId));
+
+      res.status(200).json({
+          success: true,
+          message: 'Board deleted successfully',
+      });
+  } catch (error: any) {
+      res.status(500).json({
+          success: false,
+          message: error.message || 'An error occurred while deleting the board',
+      });
+  }
+};
+ 

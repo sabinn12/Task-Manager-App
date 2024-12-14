@@ -40,4 +40,22 @@ export const getBoards = async () => {
     return boards;
 };
 
+export const deleteBoardByIdService = async (boardId: number) => {
+  const board = await prisma.board.findUnique({
+      where: { id: boardId },
+  });
 
+  if (!board) {
+      throw new Error('Board not found');
+  }
+
+  // Cascade delete: ensure tasks linked to the board are also deleted
+  await prisma.task.deleteMany({
+      where: { boardId: boardId },
+  });
+
+  // Delete the board
+  await prisma.board.delete({
+      where: { id: boardId },
+  });
+};
