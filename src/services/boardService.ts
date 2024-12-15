@@ -1,28 +1,32 @@
 import prisma from "../config/db";
 
 // Create board service
-export const createBoard = async (data: { name: string; userId: number }) => {
-  const { name } = data;
 
-  // Check if the board name already exists for the user (optional)
+export const createBoard = async (data: { name: string; userId: number }) => {
+  const { name, userId } = data;
+
+  // Check if the board name already exists for the user
   const existingBoard = await prisma.board.findFirst({
-    where: { name },
+    where: {
+      name,
+      userId, // Ensure the board name check is scoped to the authenticated user
+    },
   });
 
   if (existingBoard) {
-    throw new Error("A board with this name already exists.");
+    throw new Error("A board with this name already exists for the user.");
   }
 
-  // Create the board
+  // Create the board with the associated user
   const board = await prisma.board.create({
     data: {
       name,
+      userId, // Pass the userId to associate the board with the user
     },
   });
 
   return board;
 };
-
 
 // Get boards with tasks service
 export const getBoardsWithTasksForUser = async (userId: number) => {
@@ -33,13 +37,16 @@ export const getBoardsWithTasksForUser = async (userId: number) => {
     return boards;
 };
 
-// get boards
 
+
+// get all  boards
 export const getBoards = async () => {
     const boards = await prisma.board.findMany();
     return boards;
 };
 
+
+// delete board service
 export const deleteBoardByIdService = async (boardId: number) => {
   const board = await prisma.board.findUnique({
       where: { id: boardId },

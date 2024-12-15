@@ -76,3 +76,15 @@ export const getUserByIdService = async (id: string ) => {
 
   return user;
 };
+
+// Delete user by ID service
+export const deleteUserByIdService = async (userId: string) => {
+  // Find and delete the user
+  const deletedUser = await prisma.user.delete({
+      where: { id: parseInt(userId, 10) }, // Convert userId to number since Prisma expects an Int
+  });
+
+  return deletedUser;
+};
+
+

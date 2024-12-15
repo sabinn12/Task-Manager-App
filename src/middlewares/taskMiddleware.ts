@@ -10,20 +10,12 @@ interface AuthenticatedRequest extends Request {
 }
 
 // Authorization Middleware
-export const authorizeTaskAccess = async (
-    req: AuthenticatedRequest,
-    res: Response,
-    next: NextFunction
-) => {
+export const authorizeTaskAccess = async (req: AuthenticatedRequest,res: Response, next: NextFunction) => {
+
     const { id: userId } = req.user || {};
     const taskId = req.params.id; 
 
-    if (!userId) {
-        res.status(401).json({ success: false, message: 'Unauthorized: User not authenticated' });
-        return;
-    }
-
-    try {
+     try {
         // Fetch the task to verify ownership
         const task = await prisma.task.findUnique({
             where: { id: Number(taskId) },

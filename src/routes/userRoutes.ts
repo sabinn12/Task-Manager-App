@@ -1,7 +1,9 @@
 import express from 'express';
-import { registerUserController, loginUser, getAllUsers, getUserById} from '../controllers/userController';
+import { registerUserController, loginUser, getAllUsers, getUserById, deleteUserProfileController} from '../controllers/userController';
 import { validateRequest } from '../middlewares/validateRequest';
 import { registerUserValidation, loginUserValidation } from '../schema/userValidationsSchema';
+import { authenticate } from '../middlewares/authMiddleware';
+
 
 const router = express.Router();
 
@@ -16,6 +18,9 @@ router.get('/',  getAllUsers);
 
 // get user by id
 router.get('/:id', getUserById);
+
+// DELETE /users/profile - Delete own profile
+router.delete('/profile', authenticate, deleteUserProfileController);
 
 
 

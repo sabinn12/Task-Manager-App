@@ -11,8 +11,6 @@ interface AuthenticatedRequest extends Request {
 
 
 // Create task controller
-
-
 export const createTask = async (req: AuthenticatedRequest, res: Response) => {
     try {
         const { title, description, deadline, priority, boardId } = req.body;
@@ -37,11 +35,11 @@ export const createTask = async (req: AuthenticatedRequest, res: Response) => {
         });
     }
 };
-// get all tasks for a user controller
 
-export const getAllTasksForAUser = async (req: Request, res: Response) => {
-    try {
-        const tasks = await getAllTasksForAUserService(req.params.id);
+// get all tasks for a user controller
+export const getAllTasksForAUser = async (req: AuthenticatedRequest, res: Response) => {
+    try { 
+        const tasks = await getAllTasksForAUserService(req.user?.id as string);
         res.status(200).json({
             success: true,
             data: tasks,
@@ -56,7 +54,6 @@ export const getAllTasksForAUser = async (req: Request, res: Response) => {
 
 
 // update task by id controller
-
 export const updateTaskById = async (req: Request, res: Response) => {
     try {
         const { id } = req.params;
@@ -77,7 +74,6 @@ export const updateTaskById = async (req: Request, res: Response) => {
 
 
 // delete task by id controller
-
 export const deleteTaskById = async (req: Request, res: Response) => {  
     try {
         const { id } = req.params;

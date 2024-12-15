@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { createBoard, getBoardsWithTasksForUser, getBoards, deleteBoardByIdService } from '../services/boardService';
+import { createBoard, getBoardsWithTasksForUser, getBoards,  deleteBoardByIdService } from '../services/boardService';
 
 interface AuthenticatedRequest extends Request {
     user?: {
@@ -9,16 +9,10 @@ interface AuthenticatedRequest extends Request {
 }
 
 // Create board controller
-
 export const createBoardController = async (req: AuthenticatedRequest, res: Response) => {
   try {
     const { name } = req.body;
-    const userId = req.user?.id ? parseInt(req.user.id, 10) : undefined;
-
-    if(!userId){
-         res.status(400).json({ error: "User ID is required." });
-         return;
-    }
+    const userId = parseInt(req.user!.id, 10)
 
     const board = await createBoard({ name, userId });
     res.status(201).json({ message: 'Board created successfully', board });
@@ -33,12 +27,6 @@ export const createBoardController = async (req: AuthenticatedRequest, res: Resp
 export const getBoardsWithTasksController = async (req: AuthenticatedRequest, res: Response) => {
   try {
       const userId = Number(req.user?.id);
-
-      if (!userId) {
-       res.status(400).json({ message: "User ID is required" });
-       return;
-      }
-
       const boards = await getBoardsWithTasksForUser(userId);
 
       res.status(200).json({
@@ -54,7 +42,7 @@ export const getBoardsWithTasksController = async (req: AuthenticatedRequest, re
     }
   };
 
-  // get boards
+  // get all boards
   export const getBoardsController = async (req: Request, res: Response) => {
     try {
         const boards = await getBoards();
@@ -70,6 +58,7 @@ export const getBoardsWithTasksController = async (req: AuthenticatedRequest, re
  
       }
     };
+
 
 
 

@@ -1,5 +1,13 @@
 import { Request, Response } from 'express';
-import { registerUser, loginUserService, getAllUsersService, getUserByIdService } from '../services/userService';
+import { registerUser, loginUserService, getAllUsersService, getUserByIdService, deleteUserByIdService } from '../services/userService';
+
+
+interface AuthenticatedRequest extends Request {
+    user?: {
+        id: string;
+        email: string;
+    };
+}
 
 
 // Register user controller
@@ -70,3 +78,32 @@ export const getUserById = async (req: Request, res: Response) => {
         });
     }
 };
+
+
+// Delete user profile controller
+
+
+export const deleteUserProfileController = async (req: AuthenticatedRequest, res: Response) => {
+    try {
+        const userId = req.user?.id; // Get user ID from the authenticated request
+        if (!userId) {
+            res.status(401).json({ success: false, message: 'Unauthorized' });
+            return;
+        }
+
+        // Call service to delete the user
+        const deletedUser = await deleteUserByIdService(userId);
+
+        res.status(200).json({
+            success: true,
+            message: 'User profile deleted successfully',
+            data: deletedUser,
+        });
+    } catch (error: any) {
+        res.status(500).json({
+            success: false,
+            message: error.message || 'An error occurred while deleting the user profile',
+        });
+    }
+};
+

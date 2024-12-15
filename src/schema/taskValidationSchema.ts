@@ -52,3 +52,16 @@ export const updateTaskValidationSchema = Joi.object({
 });
 
 
+// update task status validation schema
+export const updateTaskStatusValidationSchema = Joi.object({
+    taskId: Joi.number().required().messages({
+        'number.base': 'Task ID should be a type of number',
+        'number.empty': 'Task ID is required',
+    }),
+    status: Joi.string().valid('To Do', 'In Progress', 'Completed').required().messages({
+        'string.base': 'Status should be a type of text',
+        'string.valid': 'Status must be one of the following: To Do, In Progress, Completed',
+    }),
+});
+
+
