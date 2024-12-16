@@ -115,10 +115,3 @@ export const updateTaskStatus = async (req: AuthenticatedRequest, res: Response)
         });
     }
 };
-
-
-
-
-
-
-

@@ -1,19 +1,14 @@
-
-
 {
   "compilerOptions": {
-    "target": "ES6",
-    "module": "CommonJS",
-    "strict": true,
-    "esModuleInterop": true,
-    "skipLibCheck": true,
-    "outDir": "./dist",
-    "rootDir": "./src",
-    "typeRoots": ["./node_modules/@types", "./src/@types"],
-    "types": ["express"]
+    "target": "ES2020",             // Modern JavaScript features
+    "module": "CommonJS",           // Node.js uses CommonJS
+    "strict": true,                 // Enable strict type-checking
+    "esModuleInterop": true,        // Enable compatibility with CommonJS modules
+    "skipLibCheck": true,           // Skip type-checking for declaration files
+    "outDir": "./dist",             // Compiled files output directory
+    "rootDir": "./src",             // Root directory for source files
+    "typeRoots": ["./node_modules/@types", "./src/@types"] // Custom and default type definitions
   },
-  "include": [
-    "src/**/*"
-  ],
-  "exclude": ["node_modules"]
+  "include": ["src/**/*"],          // Include all files in src folder
+  "exclude": ["node_modules"]       // Exclude node_modules folder
 }
