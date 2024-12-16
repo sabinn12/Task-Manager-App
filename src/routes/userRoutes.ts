@@ -11,10 +11,10 @@ const router = express.Router();
 router.post('/register', validateRequest(registerUserValidation), registerUserController);
 
 // User login
-router.post('/login', validateRequest(loginUserValidation), loginUser);
+router.post('/login',  validateRequest(loginUserValidation), loginUser);
 
 // get all users
-router.get('/',  getAllUsers);
+router.get('/', authenticate,  getAllUsers);
 
 // get user by id
 router.get('/:id', getUserById);

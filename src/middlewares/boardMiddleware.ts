@@ -22,18 +22,20 @@ export const authorizeBoardAccess = async ( req: AuthenticatedRequest,res: Respo
         });
 
         if (!board) {
-            return res.status(404).json({ 
+             res.status(404).json({ 
                 success: false, 
                 message: 'Board not found' 
             });
+            return;
         }
 
         // Check if the board belongs to the authenticated user
         if (board.userId !== Number(userId)) {
-            return res.status(403).json({ 
+             res.status(403).json({ 
                 success: false, 
                 message: 'Forbidden: You do not have access to this board' 
             });
+            return;
         }
 
         // Proceed to the next middleware or route handler

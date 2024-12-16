@@ -86,13 +86,9 @@ export const getUserById = async (req: Request, res: Response) => {
 export const deleteUserProfileController = async (req: AuthenticatedRequest, res: Response) => {
     try {
         const userId = req.user?.id; // Get user ID from the authenticated request
-        if (!userId) {
-            res.status(401).json({ success: false, message: 'Unauthorized' });
-            return;
-        }
-
+     
         // Call service to delete the user
-        const deletedUser = await deleteUserByIdService(userId);
+        const deletedUser = await deleteUserByIdService(userId as string);
 
         res.status(200).json({
             success: true,
