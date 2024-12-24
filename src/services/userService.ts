@@ -4,7 +4,7 @@ import jwt from "jsonwebtoken";
 
 // Register user service
 
-export const registerUser = async (name: string, email: string, password: string) => {
+export const registerUser = async (name: string, email: string, password: string, role: 'USER' | 'ADMIN' = 'USER') => {
     // Check if email already exists
     const existingUser = await prisma.user.findUnique({ where: { email } });
     if (existingUser) {
@@ -16,7 +16,7 @@ export const registerUser = async (name: string, email: string, password: string
   
     // Create user in database
     const user = await prisma.user.create({
-      data: { name, email, password: hashedPassword },
+      data: { name, email, password: hashedPassword, role },
     });
   
     return user;

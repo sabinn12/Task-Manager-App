@@ -34,5 +34,20 @@ export const authenticate = (req: AuthenticatedRequest, res: Response, next: Nex
     }
 };
 
-
+// Middleware for verifying admin secret key
+export const checkAdminSecret = (req: Request, res: Response, next: NextFunction) => {
+    const { role, secretKey } = req.body;
+  
+    if (role === 'ADMIN') {
+      if (!secretKey || secretKey !== process.env.ADMIN_SECRET) {
+         res.status(403).json({
+          success: false,
+          message: 'Invalid or missing secret key for admin creation',
+        });
+        return;
+      }
+    }
+  
+    next();
+  };
 

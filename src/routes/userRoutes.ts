@@ -2,13 +2,13 @@ import express from 'express';
 import { registerUserController, loginUser, getAllUsers, getUserById, deleteUserProfileController} from '../controllers/userController';
 import { validateRequest } from '../middlewares/validateRequest';
 import { registerUserValidation, loginUserValidation } from '../schema/userValidationsSchema';
-import { authenticate } from '../middlewares/authMiddleware';
+import { authenticate, checkAdminSecret } from '../middlewares/authMiddleware';
 
 
 const router = express.Router();
 
 // User registration
-router.post('/register', validateRequest(registerUserValidation), registerUserController);
+router.post('/register', validateRequest(registerUserValidation), checkAdminSecret, registerUserController);
 
 // User login
 router.post('/login',  validateRequest(loginUserValidation), loginUser);

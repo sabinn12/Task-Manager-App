@@ -16,7 +16,15 @@ export const registerUserValidation = joi.object({
         'string.base': 'Password should be a type of text',
         'string.empty': 'Password is required',
         'string.min': 'Password must be at least 6 characters long',
-      })
+      }),
+      role: joi.string().valid('USER', 'ADMIN').optional().messages({
+        'string.base': 'Role should be a type of text',
+        'string.empty': 'Role is required',
+      }),
+      secretKey: joi.string().optional().messages({
+        'string.base': 'Secret key should be a type of text',
+        'string.empty': 'Secret key is required',
+      }),
 });
 // validate user login
 export const loginUserValidation = joi.object({

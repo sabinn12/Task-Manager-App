@@ -14,10 +14,10 @@ interface AuthenticatedRequest extends Request {
 
 export const registerUserController = async (req: Request, res: Response) => {
     try {
-      const { name, email, password } = req.body;
+      const { name, email, password, role } = req.body;
   
       // Call service to handle registration
-      const user = await registerUser(name, email, password);
+      const user = await registerUser(name, email, password, role);
   
       res.status(201).json({ success: true, data: user });
     } catch (error: any) {
