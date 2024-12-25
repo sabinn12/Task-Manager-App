@@ -1,4 +1,5 @@
 import prisma from "../config/db";
+import { getSocketInstance } from "../config/socket";
 
 // Create board service
 
@@ -24,6 +25,12 @@ export const createBoard = async (data: { name: string; userId: number }) => {
       userId, // Pass the userId to associate the board with the user
     },
   });
+
+  // Emit real-time update for the created board
+  const io = getSocketInstance();
+  console.log('Emitting boardCreated event with data:', board);
+  io.emit('boardCreated', { board });
+  console.log('boardCreated event emitted');
 
   return board;
 };

@@ -51,3 +51,18 @@ export const checkAdminSecret = (req: Request, res: Response, next: NextFunction
     next();
   };
 
+  // middleware to verify user role
+  export const checkUserRole = (req: Request, res: Response, next: NextFunction) => {
+    const { role } = req.body;
+  
+    if (role !== 'ADMIN') {
+      res.status(403).json({
+        success: false,
+        message: 'Invalid or missing role for admin creation',
+      });
+      return;
+    }
+  
+    next();
+  };
+

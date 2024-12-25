@@ -5,6 +5,9 @@ import prisma from './config/db';
 import userRoutes from './routes/userRoutes';
 import taskRoutes from './routes/taskRoutes';
 import boardRoutes from './routes/boardRoutes';
+import { initializeSocket } from './config/socket';
+import http from 'http';
+
 
 dotenv.config();
 
@@ -23,7 +26,11 @@ app.use('/api/tasks',  taskRoutes);
 // board routes
 app.use('/api/boards', boardRoutes);
 
-app.listen(PORT, () => {
+// Create HTTP server and attach Socket.IO
+const server = http.createServer(app);
+initializeSocket(server);
+
+server.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
 });
 
