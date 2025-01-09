@@ -13,6 +13,10 @@ socket.on('connect', () => {
 socket.on('boardCreated', (data) => {
     console.log('Received boardCreated event:', data);
 });
+ 
+socket.on('boardDeleted', (data) => {
+    console.log('Received boardDeleted event:', data);
+});
 
 socket.on('disconnect', () => {
     console.log('Disconnected from the server');

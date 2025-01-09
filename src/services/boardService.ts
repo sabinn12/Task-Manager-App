@@ -6,11 +6,11 @@ import { getSocketInstance } from "../config/socket";
 export const createBoard = async (data: { name: string; userId: number }) => {
   const { name, userId } = data;
 
-  // Check if the board name already exists for the user
+  
   const existingBoard = await prisma.board.findFirst({
     where: {
       name,
-      userId, // Ensure the board name check is scoped to the authenticated user
+      userId, 
     },
   });
 
@@ -22,15 +22,15 @@ export const createBoard = async (data: { name: string; userId: number }) => {
   const board = await prisma.board.create({
     data: {
       name,
-      userId, // Pass the userId to associate the board with the user
+      userId, 
     },
   });
 
   // Emit real-time update for the created board
   const io = getSocketInstance();
-  console.log('Emitting boardCreated event with data:', board);
+  // console.log('Emitting boardCreated event with data:', board);
   io.emit('boardCreated', { board });
-  console.log('boardCreated event emitted');
+  // console.log('boardCreated event emitted');
 
   return board;
 };
@@ -43,7 +43,6 @@ export const getBoardsWithTasksForUser = async (userId: number) => {
     });
     return boards;
 };
-
 
 
 // get all  boards
@@ -72,4 +71,10 @@ export const deleteBoardByIdService = async (boardId: number) => {
   await prisma.board.delete({
       where: { id: boardId },
   });
+
+  // Emit real-time update for the deleted board
+  const io = getSocketInstance();
+  console.log('Emitting deleted board event with data:', board);
+  io.emit('boardDeleted', { boardId });
+  console.log('boarddeleted event emitted');
 };

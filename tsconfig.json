@@ -9,6 +9,6 @@
     "rootDir": "./src",             // Root directory for source files
     "typeRoots": ["./node_modules/@types", "./src/@types"] // Custom and default type definitions
   },
-  "include": ["src/**/*"],          // Include all files in src folder
+  "include": ["src/**/*", "socket.js"],          // Include all files in src folder
   "exclude": ["node_modules"]       // Exclude node_modules folder
 }

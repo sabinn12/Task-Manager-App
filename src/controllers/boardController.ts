@@ -28,7 +28,6 @@ export const getBoardsWithTasksController = async (req: AuthenticatedRequest, re
   try {
       const userId = Number(req.user?.id);
       const boards = await getBoardsWithTasksForUser(userId);
-
       res.status(200).json({
           success: true,
           data: boards,

@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { registerUser, loginUserService, getAllUsersService, getUserByIdService, deleteUserByIdService } from '../services/userService';
+import { registerUser, loginUserService, getAllUsersService, getUserByIdService, deleteUserByIdService, changeUserPasswordService } from '../services/userService';
 
 
 interface AuthenticatedRequest extends Request {
@@ -54,6 +54,7 @@ export const getAllUsers = async (req: Request, res: Response) => {
         res.status(200).json({
             success: true,
             data: users,
+
         });
     } catch (error: any) {
         res.status(500).json({
@@ -80,6 +81,8 @@ export const getUserById = async (req: Request, res: Response) => {
 };
 
 
+
+
 // Delete user profile controller
 
 
@@ -99,6 +102,45 @@ export const deleteUserProfileController = async (req: AuthenticatedRequest, res
         res.status(500).json({
             success: false,
             message: error.message || 'An error occurred while deleting the user profile',
+        });
+    }
+};
+
+
+
+// change password controller
+export const changePasswordController = async (req: AuthenticatedRequest, res: Response) => {
+    try {
+        const { oldPassword, newPassword, confirmPassword } = req.body; // Extracted inputs
+        const userId = req.user?.id; // Extract user ID from the authenticated middleware
+
+        
+        if (newPassword !== confirmPassword) {
+             res.status(400).json({
+                success: false,
+                message: 'New password and confirm password do not match',
+            });
+            return ;
+        }
+
+        if (!userId) {
+           res.status(401).json({ success: false, message: 'Unauthorized' });
+           return;
+        }
+        
+
+        // Call the service to handle password change
+        const updatedUser = await changeUserPasswordService(userId, oldPassword, newPassword);
+
+        res.status(200).json({
+            success: true,
+            message: 'Password updated successfully',
+            data: updatedUser,
+        });
+    } catch (error: any) {
+        res.status(500).json({
+            success: false,
+            message: error.message || 'An error occurred while changing the password',
         });
     }
 };

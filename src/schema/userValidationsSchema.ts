@@ -39,3 +39,22 @@ export const loginUserValidation = joi.object({
         'string.min': 'Password must be at least 6 characters long',
     })
 });
+
+// change password validation
+
+export const changePasswordValidation = joi.object({
+  oldPassword: joi.string().min(6).required().messages({
+      'string.base': 'Old password should be a type of text',
+      'string.empty': 'Old password is required',
+      'string.min': 'Old password must be at least 6 characters long',
+  }),
+  newPassword: joi.string().min(6).required().messages({
+      'string.base': 'New password should be a type of text',
+      'string.empty': 'New password is required',
+      'string.min': 'New password must be at least 6 characters long',
+  }),
+  confirmPassword: joi.string().valid(joi.ref('newPassword')).required().messages({
+      'any.only': 'New password and confirm password must match',
+      'string.empty': 'Confirm password is required',
+  }),
+});

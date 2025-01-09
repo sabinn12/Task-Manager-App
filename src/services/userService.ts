@@ -41,7 +41,7 @@ export const registerUser = async (name: string, email: string, password: string
 
     // Generate JWT
     const token = jwt.sign(
-        { id: user.id, email: user.email },
+        { id: user.id, email: user.email , role: user.role },
         process.env.JWT_SECRET as string,
         { expiresIn: '1h' }
     );
@@ -57,6 +57,7 @@ export const getAllUsersService = async () => {
           id: true,
           name: true,
           email: true,
+          role: true,
           createdAt: true, // Customize fields based on your user schema
       },
   });
@@ -87,4 +88,30 @@ export const deleteUserByIdService = async (userId: string) => {
   return deletedUser;
 };
 
+// change password service
 
+export const changeUserPasswordService = async (userId: string, oldPassword: string, newPassword: string) => {
+  
+  const user = await prisma.user.findUnique({ where: { id: parseInt(userId, 10) } });
+
+  if (!user) {
+      throw new Error('User not found');
+  }
+
+  // Verify the old password
+  const isPasswordValid = await bcrypt.compare(oldPassword, user.password);
+  if (!isPasswordValid) {
+      throw new Error('Old password is incorrect');
+  }
+
+  // Hash the new password
+  const hashedNewPassword = await bcrypt.hash(newPassword, 10);
+
+  // Update the password in the database
+  const updatedUser = await prisma.user.update({
+      where: { id: parseInt(userId, 10) },
+      data: { password: hashedNewPassword },
+  });
+
+  return updatedUser;
+};
