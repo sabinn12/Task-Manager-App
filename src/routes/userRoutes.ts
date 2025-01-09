@@ -1,7 +1,7 @@
 import express from 'express';
-import { registerUserController, loginUser, getAllUsers, getUserById, deleteUserProfileController, changePasswordController} from '../controllers/userController';
+import { registerUserController, loginUser, getAllUsers, getUserById, deleteUserProfileController, updateUserById, changePasswordController} from '../controllers/userController';
 import { validateRequest } from '../middlewares/validateRequest';
-import { registerUserValidation, loginUserValidation, changePasswordValidation } from '../schema/userValidationsSchema';
+import { registerUserValidation, loginUserValidation, updateUserValidation, changePasswordValidation } from '../schema/userValidationsSchema';
 import { authenticate, checkAdminSecret, checkUserRole } from '../middlewares/authMiddleware';
 
 
@@ -18,6 +18,10 @@ router.get('/', authenticate, checkUserRole('ADMIN'),  getAllUsers);
 
 // get user by id
 router.get('/:id', getUserById);
+
+// Update user details
+router.put('/:id', authenticate, validateRequest(updateUserValidation), updateUserById);
+
 
 // DELETE /users/profile - Delete own profile
 router.delete('/profile', authenticate, deleteUserProfileController);

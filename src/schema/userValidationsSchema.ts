@@ -40,6 +40,23 @@ export const loginUserValidation = joi.object({
     })
 });
 
+// update user validation
+
+export const updateUserValidation = joi.object({
+  name: joi.string().min(3).optional().messages({
+      'string.base': 'Name should be a type of text',
+      'string.min': 'Name must be at least 3 characters long',
+  }),
+  email: joi.string().email().optional().messages({
+      'string.base': 'Email should be a type of text',
+      'string.email': 'Please provide a valid email',
+  }),
+  role: joi.string().valid('USER', 'ADMIN').optional().messages({
+      'string.base': 'Role should be a type of text',
+  }),
+});
+
+
 // change password validation
 
 export const changePasswordValidation = joi.object({

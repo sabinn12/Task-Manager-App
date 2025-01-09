@@ -78,6 +78,24 @@ export const getUserByIdService = async (id: string ) => {
   return user;
 };
 
+
+
+// Update user details service
+export const updateUserByIdService = async (userId: string,updates: Partial<{ name: string; email: string }>) => {
+  // Update user details 
+  const updatedUser = await prisma.user.update({
+    where: { id: parseInt(userId, 10) },
+    data: {
+      name: updates.name,
+      email: updates.email,
+    },
+  });
+
+  return updatedUser;
+};
+
+
+
 // Delete user by ID service
 export const deleteUserByIdService = async (userId: string) => {
   // Find and delete the user

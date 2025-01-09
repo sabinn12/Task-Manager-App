@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { registerUser, loginUserService, getAllUsersService, getUserByIdService, deleteUserByIdService, changeUserPasswordService } from '../services/userService';
+import { registerUser, loginUserService, getAllUsersService, getUserByIdService, deleteUserByIdService, updateUserByIdService, changeUserPasswordService } from '../services/userService';
 
 
 interface AuthenticatedRequest extends Request {
@@ -81,11 +81,32 @@ export const getUserById = async (req: Request, res: Response) => {
 };
 
 
+// Update user details controller
+export const updateUserById = async (req: Request, res: Response) => {
+    try {
+        const userId = req.params.id; // Get user ID from route params
+        const updates = req.body; // Extract updates from the request body
+
+        // Call service to handle updating user details
+        const updatedUser = await updateUserByIdService(userId, updates);
+
+        res.status(200).json({
+            success: true,
+            message: 'User details updated successfully',
+            data: updatedUser,
+        });
+    } catch (error: any) {
+        res.status(400).json({
+            success: false,
+            message: error.message || 'An error occurred while updating user details',
+        });
+    }
+};
+
+
 
 
 // Delete user profile controller
-
-
 export const deleteUserProfileController = async (req: AuthenticatedRequest, res: Response) => {
     try {
         const userId = req.user?.id; // Get user ID from the authenticated request
