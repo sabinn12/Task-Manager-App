@@ -37,18 +37,20 @@ export const createBoard = async (data: { name: string; userId: number }) => {
 
 // Get boards with tasks service
 export const getBoardsWithTasksForUser = async (userId: number) => {
-    const boards = await prisma.board.findMany({
-        where: { tasks: { some: { userId } } },
-        include: { tasks: true }, 
-    });
-    return boards;
+  const boards = await prisma.board.findMany({
+      where: { userId }, // Ensure only boards belonging to the user
+      include: { tasks: true },
+  });
+  return boards;
 };
 
 
-// get all  boards
-export const getBoards = async () => {
-    const boards = await prisma.board.findMany();
-    return boards;
+// Get all boards service (filtered for authenticated user)
+export const getBoards = async (userId: number) => {
+  const boards = await prisma.board.findMany({
+      where: { userId }, // Ensure only boards belonging to the user
+  });
+  return boards;
 };
 
 

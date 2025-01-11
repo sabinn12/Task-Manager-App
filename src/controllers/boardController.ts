@@ -41,22 +41,22 @@ export const getBoardsWithTasksController = async (req: AuthenticatedRequest, re
     }
   };
 
-  // get all boards
-  export const getBoardsController = async (req: Request, res: Response) => {
-    try {
-        const boards = await getBoards();
-        res.status(200).json({
-            success: true,
-            data: boards,
-        });
-    } catch (error: any) {
-        res.status(500).json({
-            success: false,
-            message: error.message || "An error occurred while fetching boards",
-        });
- 
-      }
-    };
+ // Get all boards for authenticated user
+export const getBoardsController = async (req: AuthenticatedRequest, res: Response) => {
+  try {
+      const userId = Number(req.user?.id); // Get user ID from authenticated request
+      const boards = await getBoards(userId);
+      res.status(200).json({
+          success: true,
+          data: boards,
+      });
+  } catch (error: any) {
+      res.status(500).json({
+          success: false,
+          message: error.message || "An error occurred while fetching boards",
+      });
+  }
+};
 
 
 

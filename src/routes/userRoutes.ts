@@ -23,7 +23,7 @@ router.get('/:id', getUserById);
 router.put('/:id', authenticate, validateRequest(updateUserValidation), updateUserById);
 
 
-// DELETE /users/profile - Delete own profile
+// DELETE 
 router.delete('/profile', authenticate, deleteUserProfileController);
 
 // change password
