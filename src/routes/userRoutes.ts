@@ -14,7 +14,7 @@ router.post('/register', validateRequest(registerUserValidation), checkAdminSecr
 router.post('/login',  validateRequest(loginUserValidation), loginUser);
 
 // get all users
-router.get('/', authenticate, checkUserRole('ADMIN'),  getAllUsers);
+router.get('/', authenticate,   getAllUsers);
 
 // get user by id
 router.get('/:id', getUserById);

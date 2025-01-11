@@ -53,6 +53,24 @@ export const getBoards = async (userId: number) => {
   return boards;
 };
 
+// Update board name service
+export const updateBoardNameService = async (boardId: number, name: string) => {
+  // Update the board's name
+  const updatedBoard = await prisma.board.update({
+      where: { id: boardId },
+      data: { name },
+  });
+
+  // Emit real-time update for the updated board
+  const io = getSocketInstance();
+  console.log('Emitting boardUpdated event with data:', updatedBoard);
+  io.emit('boardUpdated', { boardId, name });
+  console.log('boardUpdated event emitted');
+  return updatedBoard;
+};
+
+
+
 
 // delete board service
 export const deleteBoardByIdService = async (boardId: number) => {
@@ -76,7 +94,7 @@ export const deleteBoardByIdService = async (boardId: number) => {
 
   // Emit real-time update for the deleted board
   const io = getSocketInstance();
-  console.log('Emitting deleted board event with data:', board);
+  
   io.emit('boardDeleted', { boardId });
-  console.log('boarddeleted event emitted');
+  
 };

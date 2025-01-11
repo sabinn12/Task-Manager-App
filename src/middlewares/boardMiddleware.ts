@@ -10,40 +10,53 @@ interface AuthenticatedRequest extends Request {
 }
 
 // Authorization Middleware
-export const authorizeBoardAccess = async ( req: AuthenticatedRequest,res: Response,next: NextFunction) => {
+export const authorizeBoardAccess = async (
+    req: AuthenticatedRequest,
+    res: Response,
+    next: NextFunction
+  ) => {
     const { id: userId } = req.user || {};
-    const boardId = req.params.id; // Board ID from request params
-
+    const boardId = req.params.boardId; // Ensure correct parameter name
+  
     try {
-        // Fetch the board to verify ownership
-        const board = await prisma.board.findUnique({
-            where: { id: Number(boardId) },
-            select: { userId: true }, // Retrieve only the userId for verification
+      // Ensure both `userId` and `boardId` are valid
+      if (!userId || !boardId) {
+      res.status(400).json({
+          success: false,
+          message: 'User ID or Board ID missing',
         });
-
-        if (!board) {
-             res.status(404).json({ 
-                success: false, 
-                message: 'Board not found' 
-            });
-            return;
-        }
-
-        // Check if the board belongs to the authenticated user
-        if (board.userId !== Number(userId)) {
-             res.status(403).json({ 
-                success: false, 
-                message: 'Forbidden: You do not have access to this board' 
-            });
-            return;
-        }
-
-        // Proceed to the next middleware or route handler
-        next();
+        return;
+      }
+  
+      // Fetch the board and verify ownership
+      const board = await prisma.board.findUnique({
+        where: { id: Number(boardId) },
+        select: { userId: true },
+      });
+  
+      if (!board) {
+         res.status(404).json({
+          success: false,
+          message: 'Board not found',
+        });
+        return;
+      }
+  
+      if (board.userId !== Number(userId)) {
+         res.status(403).json({
+          success: false,
+          message: 'Forbidden: You do not have access to this board',
+        });
+        return;
+      }
+  
+      next(); // Proceed if the user owns the board
     } catch (error) {
-        res.status(500).json({ 
-            success: false, 
-            message: 'Internal server error' 
-        });
+      console.error('Error in authorizeBoardAccess:', error);
+      res.status(500).json({
+        success: false,
+        message: 'Internal server error',
+      });
     }
-};
+  };
+  

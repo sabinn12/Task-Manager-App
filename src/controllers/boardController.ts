@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { createBoard, getBoardsWithTasksForUser, getBoards,  deleteBoardByIdService } from '../services/boardService';
+import { createBoard, getBoardsWithTasksForUser, getBoards, updateBoardNameService,  deleteBoardByIdService } from '../services/boardService';
 
 interface AuthenticatedRequest extends Request {
     user?: {
@@ -58,6 +58,27 @@ export const getBoardsController = async (req: AuthenticatedRequest, res: Respon
   }
 };
 
+// update board controller
+export const updateBoardNameController = async (req: AuthenticatedRequest, res: Response) => {
+    try {
+        const { boardId } = req.params;
+        const { name } = req.body;
+
+        // Call the service to update the board name
+        const updatedBoard = await updateBoardNameService(Number(boardId), name);
+
+        res.status(200).json({
+            success: true,
+            message: 'Board name updated successfully',
+            data: updatedBoard,
+        });
+    } catch (error: any) {
+        res.status(500).json({
+            success: false,
+            message: error.message || 'An error occurred while updating the board name',
+        });
+    }
+};
 
 
 
