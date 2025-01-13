@@ -18,7 +18,7 @@ router.put('/:id', authenticate, authorizeTaskAccess, validateRequest(updateTask
 
 // update task status route  
 
-router.put('/update-status', authenticate, authorizeTaskAccess, validateRequest(updateTaskStatusValidationSchema), updateTaskStatus);
+router.patch('/update-status', authenticate, authorizeTaskAccess, validateRequest(updateTaskStatusValidationSchema), updateTaskStatus);
 
 
 // delete task by id route  

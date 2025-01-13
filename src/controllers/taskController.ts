@@ -96,22 +96,24 @@ export const deleteTaskById = async (req: Request, res: Response) => {
 export const updateTaskStatus = async (req: AuthenticatedRequest, res: Response) => {
     try {
         const { taskId, status } = req.body;
+        const userId = Number(req.user?.id);
 
         const updatedTask = await updateTaskStatusService({
-            taskId: Number(taskId),
+            taskId: Number(taskId),  
             status,
-            userId: Number(req.user?.id),
+            userId
         });
 
         res.status(200).json({
             success: true,
             message: 'Task status updated successfully',
-            data: updatedTask,
+            data: updatedTask
         });
     } catch (error: any) {
-        res.status(400).json({
+        console.error('Error updating task status:', error);
+        res.status(500).json({
             success: false,
-            message: error.message || 'An error occurred while updating the task status',
+            message: error.message || 'An error occurred while updating the task status'
         });
     }
 };

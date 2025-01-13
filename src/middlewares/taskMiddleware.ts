@@ -13,7 +13,7 @@ interface AuthenticatedRequest extends Request {
 export const authorizeTaskAccess = async (req: AuthenticatedRequest,res: Response, next: NextFunction) => {
 
     const { id: userId } = req.user || {};
-    const taskId = req.params.id; 
+    const taskId = req.body.taskId; 
 
      try {
         // Fetch the task to verify ownership
@@ -21,6 +21,7 @@ export const authorizeTaskAccess = async (req: AuthenticatedRequest,res: Respons
             where: { id: Number(taskId) },
             select: { userId: true }, 
         });
+        
 
         if (!task) {
             res.status(404).json({ success: false, message: 'Task not found' });
