@@ -82,26 +82,31 @@ export const getUserById = async (req: Request, res: Response) => {
 
 
 // Update user details controller
-export const updateUserById = async (req: Request, res: Response) => {
+export const updateUserProfile = async (req: AuthenticatedRequest, res: Response) => {
     try {
-        const userId = req.params.id; // Get user ID from route params
-        const updates = req.body; // Extract updates from the request body
+        const userId = req.user?.id; // Get user ID from authenticated user token
+        const updates = req.body; // Extract name/email updates from request body
 
-        // Call service to handle updating user details
+        if (!userId) {
+            throw new Error('User ID not found in the request');
+        }   
+
+        // Call service to update user details
         const updatedUser = await updateUserByIdService(userId, updates);
 
         res.status(200).json({
             success: true,
-            message: 'User details updated successfully',
+            message: 'User profile updated successfully',
             data: updatedUser,
         });
     } catch (error: any) {
         res.status(400).json({
             success: false,
-            message: error.message || 'An error occurred while updating user details',
+            message: error.message || 'An error occurred while updating the user profile.',
         });
     }
 };
+
 
 
 

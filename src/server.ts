@@ -7,6 +7,7 @@ import taskRoutes from './routes/taskRoutes';
 import boardRoutes from './routes/boardRoutes';
 import { initializeSocket } from './config/socket';
 import http from 'http';
+import swaggerdocs from './docs/swagger';
 
 
 dotenv.config();
@@ -16,6 +17,9 @@ const PORT = process.env.PORT || 3000;
 
 app.use(cors());
 app.use(express.json());
+
+// Swagger documentation
+app.use('/api-docs', swaggerdocs);
 
 // users routes
 app.use('/api/users', userRoutes);
@@ -32,6 +36,7 @@ initializeSocket(server);
 
 server.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
+  console.log(`API documentation available at http://localhost:${PORT}/api-docs`);
 });
 
 prisma

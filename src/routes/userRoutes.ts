@@ -1,5 +1,5 @@
 import express from 'express';
-import { registerUserController, loginUser, getAllUsers, getUserById, deleteUserProfileController, updateUserById, changePasswordController} from '../controllers/userController';
+import { registerUserController, loginUser, getAllUsers, getUserById, deleteUserProfileController, updateUserProfile, changePasswordController} from '../controllers/userController';
 import { validateRequest } from '../middlewares/validateRequest';
 import { registerUserValidation, loginUserValidation, updateUserValidation, changePasswordValidation } from '../schema/userValidationsSchema';
 import { authenticate, checkAdminSecret, checkUserRole } from '../middlewares/authMiddleware';
@@ -19,15 +19,17 @@ router.get('/',   getAllUsers);
 // get user by id
 router.get('/:id', getUserById);
 
+// change password
+router.put('/change-password',validateRequest(changePasswordValidation), authenticate, changePasswordController);
+
+ 
+
 // Update user details
-router.put('/:id', authenticate, validateRequest(updateUserValidation), updateUserById);
+router.put('/own-profile', authenticate, validateRequest(updateUserValidation), updateUserProfile);
 
 
 // DELETE 
 router.delete('/profile', authenticate, deleteUserProfileController);
-
-// change password
- router.put('/change-password',validateRequest(changePasswordValidation), authenticate, changePasswordController);
 
 
 
